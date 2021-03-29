@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersTable extends Migration
+class CreateReferenceStoragesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('reference_storages', function (Blueprint $table) {
             $table->id();
-            $table->string('nomor_pegawai')->unique();
-            $table->string('nama');
-            $table->date('tanggal_lahir');
-            $table->integer('role_id');
-            $table->string('password');
-            $table->rememberToken();
+            $table->string('nama_barang');
+            $table->string('kode_barang');
+            $table->string('kategori');
+            $table->unsignedBigInteger('created_by');
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('reference_storages');
     }
 }
