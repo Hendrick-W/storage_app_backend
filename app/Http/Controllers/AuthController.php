@@ -33,25 +33,26 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         try {
+
             if (! $admin_user = JWTAuth::parseToken()->authenticate()) {
-                return response()->json(['user_not_found'], 404);
+                return response()->json(["message" => 'user_not_found'], 404);
             }
 
         } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
 
-            return response()->json(['token_expired'], $e->getStatusCode());
+            return response()->json(["message" => 'token_expired'], $e->getStatusCode());
 
         } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
 
-            return response()->json(['token_invalid'], $e->getStatusCode());
+            return response()->json(["message" => 'token_invalid'], $e->getStatusCode());
 
         } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
 
-            return response()->json(['token_absent'], $e->getStatusCode());
+            return response()->json(["message" => 'token_absent'], $e->getStatusCode());
 
         }
         if($admin_user->role_id > 1 || $admin_user->id == $request->role_id){
-            return response()->json(["message" => 'Not Authorized'], 404);
+            return response()->json(["message" => 'Forbidden'], 403);
         }
         $validator = Validator::make($request->all(), [
             "nomor_pegawai" => "required|string",
@@ -94,20 +95,20 @@ class AuthController extends Controller
         try {
 
             if (! $user = JWTAuth::parseToken()->authenticate()) {
-                return response()->json(['user_not_found'], 404);
+                return response()->json(["message" => 'user_not_found'], 404);
             }
 
         } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
 
-            return response()->json(['token_expired'], $e->getStatusCode());
+            return response()->json(["message" => 'token_expired'], $e->getStatusCode());
 
         } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
 
-            return response()->json(['token_invalid'], $e->getStatusCode());
+            return response()->json(["message" => 'token_invalid'], $e->getStatusCode());
 
         } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
 
-            return response()->json(['token_absent'], $e->getStatusCode());
+            return response()->json(["message" => 'token_absent'], $e->getStatusCode());
 
         }
 
@@ -118,24 +119,26 @@ class AuthController extends Controller
         try {
 
             if (! $user = JWTAuth::parseToken()->authenticate()) {
-                return response()->json(['user_not_found'], 404);
+                return response()->json(["message" => 'user_not_found'], 404);
             }
 
         } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
 
-            return response()->json(['token_expired'], $e->getStatusCode());
+            return response()->json(["message" => 'token_expired'], $e->getStatusCode());
 
         } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
 
-            return response()->json(['token_invalid'], $e->getStatusCode());
+            return response()->json(["message" => 'token_invalid'], $e->getStatusCode());
 
         } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
 
-            return response()->json(['token_absent'], $e->getStatusCode());
+            return response()->json(["message" => 'token_absent'], $e->getStatusCode());
 
         }
-
-        return response()->json(['success']);
+        if($user->role_id > 1){
+            return response()->json(["message"=> 'Forbidden'], 403);
+        }
+        return User::all();
     }
     public function logout(Request $request)
     {
