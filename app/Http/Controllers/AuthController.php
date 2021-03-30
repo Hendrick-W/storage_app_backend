@@ -113,7 +113,7 @@ class AuthController extends Controller
 
         return 
     }
-    public function getuser(Request $request)
+    public function getalluser(Request $request)
     {
         try {
 
