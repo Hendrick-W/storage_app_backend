@@ -111,9 +111,9 @@ class AuthController extends Controller
 
         }
 
-        return 
+        return response()->json(compact('user'))
     }
-    public function getalluser(Request $request)
+    public function getuser(Request $request)
     {
         try {
 
@@ -135,7 +135,7 @@ class AuthController extends Controller
 
         }
 
-        return User::all();
+        return response()->json(['success']);
     }
     public function logout(Request $request)
     {
