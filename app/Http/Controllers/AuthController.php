@@ -50,7 +50,7 @@ class AuthController extends Controller
             return response()->json(['token_absent'], $e->getStatusCode());
 
         }
-        if($admin_user->id >1 || $admin_user->id == $request->role_id){
+        if($admin_user->role_id > 1 || $admin_user->id == $request->role_id){
             return response()->json(["message" => 'Not Authorized'], 404);
         }
         $validator = Validator::make($request->all(), [
