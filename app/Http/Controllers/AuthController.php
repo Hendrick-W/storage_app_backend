@@ -29,10 +29,13 @@ class AuthController extends Controller
             "status" => true,
             "token"=>$token
         ]);
-        return response()->json(compact('token'));
     }
     public function register(Request $request)
     {
+        return response()->json([
+            "status" => true,
+            "token"=>'abc'
+        ]);
         try {
             if (! $admin_user = JWTAuth::parseToken()->authenticate()) {
                 return response()->json(['user_not_found'], 404);
