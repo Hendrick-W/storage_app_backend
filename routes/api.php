@@ -18,6 +18,7 @@ Route::post("login", "AuthController@login");
 Route::group(["middleware" => "jwt.verify"], function () {
     Route::post("register", "AuthController@register");
     Route::get('get_user', 'AuthController@getuser');
+    Route::get('get_all_user', 'AuthController@getalluser');
     Route::get("logout", "AuthController@logout");
     Route::resource("reference_storage", "ReferenceStorageController");
 });
