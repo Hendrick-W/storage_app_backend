@@ -32,10 +32,6 @@ class AuthController extends Controller
     }
     public function register(Request $request)
     {
-        return response()->json([
-            "status" => true,
-            "token"=>'abc'
-        ]);
         try {
             if (! $admin_user = JWTAuth::parseToken()->authenticate()) {
                 return response()->json(['user_not_found'], 404);
