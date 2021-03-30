@@ -162,7 +162,7 @@ class AuthController extends Controller
         } catch (JWTException $exception) {
             return response()->json([
                 "status" => false,
-                "message" => "Ops, the user can not be logged out"
+                "message" => "Ops, the user can not be logged out, contact admin"
             ]);
         }
     }
