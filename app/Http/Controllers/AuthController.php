@@ -111,9 +111,9 @@ class AuthController extends Controller
 
         }
 
-        return response()->json(compact('user'))
+        return response()->json(compact('user'));
     }
-    public function getuser(Request $request)
+    public function getalluser(Request $request)
     {
         try {
 
