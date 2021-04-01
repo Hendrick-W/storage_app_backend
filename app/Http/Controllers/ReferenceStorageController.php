@@ -104,7 +104,8 @@ class ReferenceStorageController extends Controller
             $ref_storage->nama_barang = $request->nama_barang;
             $ref_storage->kode_barang = $request->kode_barang;
             $ref_storage->kategori = $request->kategori;
-            $ref_storage->created_by = $user->id;
+            $ref_storage->created_by = $user->nama;
+            $ref_storage->user_role = $user->role_id;
             $ref_storage->save();
 
             return response()->json([
