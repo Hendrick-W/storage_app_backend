@@ -115,7 +115,7 @@ class AuthController extends Controller
         }
         return response()->json([
             "status" => true,
-            "message" => $user,
+            "user" => $user,
         ]);
     }
     public function getalluser(Request $request)
