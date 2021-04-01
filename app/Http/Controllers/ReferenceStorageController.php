@@ -4,15 +4,12 @@ namespace App\Http\Controllers;
 
 use JWTAuth;
 use App\ReferenceStorage;
+use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ReferenceStorageController extends Controller
 {
-    protected $user;
-    public function __construct()
-    {
-        $this->user = JWTAuth::parseToken()->authenticate();
-    }
     /**
      * Display a listing of the resource.
      *
@@ -42,7 +39,63 @@ class ReferenceStorageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Check token and the user that associated with it
+        try {
+
+            if (! $user = JWTAuth::parseToken()->authenticate()) {
+                return response()->json(["message" => 'user_not_found'], 404);
+            }
+
+        } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+
+            return response()->json(["message" => 'token_expired'], $e->getStatusCode());
+
+        } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+
+            return response()->json(["message" => 'token_invalid'], $e->getStatusCode());
+
+        } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
+
+            return response()->json(["message" => 'token_absent'], $e->getStatusCode());
+
+        }
+
+        // Check the user role_id (if the user is other than admin or dept head)
+        if($user->role_id > 1){
+            return response()->json(["message" => 'Forbidden'], 403);
+        }
+
+        //Validator for the data
+        $validator = Validator::make($request->all(), [
+            "nama_barang" => "required|string",
+            "kode_barang" => "required|string",
+            "kategori" => "required|string"
+        ]);
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
+        //Eloquent model
+        try {
+            $ref_storage = new ReferenceStorage();
+            $ref_storage->nama_barang = $request->nama_barang;
+            $ref_storage->kode_barang = $request->kode_barang;
+            $ref_storage->kategori = $request->kategori;
+            $ref_storage->created_by = $user->id;
+            $ref_storage->save();
+
+            return response()->json([
+                "status" => true,
+                "message"=>'New reference item has been created',
+                "user" => $ref_storage
+            ]);
+            
+        } catch (JWTException $exception) {
+            return response()->json([
+                "status" => false,
+                "message" => "Ops, New reference item cannot be created"
+            ]);
+        }
     }
 
     /**
