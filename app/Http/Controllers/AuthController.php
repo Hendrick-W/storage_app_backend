@@ -90,6 +90,7 @@ class AuthController extends Controller
                 "message" => "Ops, the user can not be created"
             ]);
         }
+        return response()->json(compact('user'));
     }
     public function getuser(Request $request)
     {
@@ -112,8 +113,10 @@ class AuthController extends Controller
             return response()->json(["message" => 'token_absent'], $e->getStatusCode());
 
         }
-
-        return response()->json(compact('user'));
+        return response()->json([
+            "status" => true,
+            "message" => $user,
+        ]);
     }
     public function getalluser(Request $request)
     {
