@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use JWTAuth;
 use App\ReferenceStorage;
+use App\Http\Resources\ReferencesCollection;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -18,7 +19,29 @@ class ReferenceStorageController extends Controller
     public function index()
     {
         //
-        return ReferenceStorage::all();
+        try {
+
+            if (! $user = JWTAuth::parseToken()->authenticate()) {
+                return response()->json(["message" => 'user_not_found'], 404);
+            }
+
+        } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+
+            return response()->json(["message" => 'token_expired'], $e->getStatusCode());
+
+        } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+
+            return response()->json(["message" => 'token_invalid'], $e->getStatusCode());
+
+        } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
+
+            return response()->json(["message" => 'token_absent'], $e->getStatusCode());
+
+        }
+        if($user->role_id > 1){
+            return ReferencesCollection::collection(ReferenceStorage::all());
+        }
+        return response()->json(["data"=> ReferenceStorage::all()]);
     }
 
     /**
