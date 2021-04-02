@@ -53,7 +53,7 @@ class AuthController extends Controller
 
         }
         if($admin_user->role_id > 1 || $admin_user->id == $request->role_id){
-            return response()->json(["message" => 'Forbidden'], 403);
+            return response()->json(["message" => $admin_user->role_id], 403);
         }
         $validator = Validator::make($request->all(), [
             "nomor_pegawai" => "required|string",
