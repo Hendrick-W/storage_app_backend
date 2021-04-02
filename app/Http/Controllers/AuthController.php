@@ -147,7 +147,10 @@ class AuthController extends Controller
         } else {
             $result = User::all();
         }
-        return response()->json(["data"=> $result]);
+        return response()->json([
+            "status"=>true,
+            "data"=> $result
+        ]);
     }
     public function logout(Request $request)
     {
