@@ -142,7 +142,12 @@ class AuthController extends Controller
         if($user->role_id > 1){
             return response()->json(["message"=> 'Forbidden'], 403);
         }
-        return response()->json(["data"=> User::all()]);
+        if($user->role_id == 1){
+            $result = User::where('role_id', '>', 1)->get();
+        } else {
+            $result = User::all();
+        }
+        return response()->json(["data"=> $result]);
     }
     public function logout(Request $request)
     {
