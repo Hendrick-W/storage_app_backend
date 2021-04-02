@@ -52,8 +52,8 @@ class AuthController extends Controller
             return response()->json(["message" => 'token_absent'], $e->getStatusCode());
 
         }
-        if($admin_user->role_id > 1 || $admin_user->id == $request->role_id){
-            return response()->json(["message" => $admin_user->role_id], 403);
+        if($admin_user->role_id > 1 || $admin_user->id === $request->role_id){
+            return response()->json(["message" => "Forbidden"], 403);
         }
         $validator = Validator::make($request->all(), [
             "nomor_pegawai" => "required|string",
