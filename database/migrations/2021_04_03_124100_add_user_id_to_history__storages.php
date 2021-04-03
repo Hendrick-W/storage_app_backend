@@ -15,6 +15,7 @@ class AddUserIdToHistoryStorages extends Migration
     {
         Schema::table('history__storages', function (Blueprint $table) {
             //
+            $table->integer('user_id')->after('created_by');
         });
     }
 
@@ -27,6 +28,7 @@ class AddUserIdToHistoryStorages extends Migration
     {
         Schema::table('history__storages', function (Blueprint $table) {
             //
+            $table->dropColumn('user_id');
         });
     }
 }
