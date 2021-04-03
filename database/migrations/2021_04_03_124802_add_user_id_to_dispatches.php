@@ -15,6 +15,7 @@ class AddUserIdToDispatches extends Migration
     {
         Schema::table('dispatches', function (Blueprint $table) {
             //
+            $table->integer('user_id')->after('created_by');
         });
     }
 
@@ -27,6 +28,7 @@ class AddUserIdToDispatches extends Migration
     {
         Schema::table('dispatches', function (Blueprint $table) {
             //
+            $table->dropColumn('user_id');
         });
     }
 }
