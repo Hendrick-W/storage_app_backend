@@ -21,6 +21,7 @@ Route::group(["middleware" => "jwt.verify"], function () {
     Route::get('get_all_user', 'AuthController@getalluser');
     Route::get("logout", "AuthController@logout");
     Route::apiResource("reference_storage", "ReferenceStorageController");
+    Route::apiResource("reception", "ReceptionController");
 });
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
