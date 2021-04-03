@@ -39,9 +39,9 @@ class ReferenceStorageController extends Controller
 
         }
         if($user->role_id > 1){
-            return ReferencesCollection::collection(ReferenceStorage::all());
+            return response()->json(["status" => true,"data"=> ReferencesCollection::collection(ReferenceStorage::all())]);
         }
-        return response()->json(["data"=> ReferenceStorage::all()]);
+        return response()->json(["status" => true,"data"=> ReferenceStorage::all()]);
     }
 
     /**
